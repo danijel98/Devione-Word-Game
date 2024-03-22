@@ -1,0 +1,61 @@
+.menu {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 9vh;
+    background-color: white;
+    padding: 2vh;
+    margin: 0 !important;
+}
+
+.logoBox {
+    display: flex;
+    flex-direction: row;
+    background-size: cover;
+    height: 4vw;
+    width: 7.5vw;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    display: flex;
+    flex-direction: row;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    background-image: url("../../assets/logo.png");
+}
+
+.submitBtnContainer {
+    position: absolute;
+    right: 1vh;
+    top: 2vh;
+}
+
+.btnSubmit {
+    border-radius: 0.5vw;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    padding: 0.75vh;
+    background-color: #1f2937;
+}
+
+.btnSubmit:hover {
+    cursor: pointer;
+    background-color: rgba(31, 41, 55, .9);
+}
+
+.txtSubmit {
+    color: white;
+    font-size: 1.0364583333333333vw;
+    font-family: mulish-light;
+    font-weight: bold;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}

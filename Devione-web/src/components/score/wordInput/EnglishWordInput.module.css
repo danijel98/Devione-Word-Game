@@ -1,0 +1,58 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 3vh;
+
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 80vw;
+  margin-top: 3vh;
+  border-radius: 6px;
+}
+
+.inputField {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  width: 75%;
+  font-family: mulish-light;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.inputField::placeholder {
+  color: #aaa;
+}
+
+.submitButton {
+  border-radius: 0.5vw;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0.75vh;
+  background-color: #1f2937;
+}
+
+.txtSubmitButton {
+  color: white;
+  font-size: 1.0364583333333333vw;
+  font-family: mulish-light;
+  font-weight: bold;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
+.submitButton:hover {
+  background-color: rgba(31, 41, 55, 0.9);
+}
+
+.error {
+  color: red;
+  font-family: mulish-light;
+}

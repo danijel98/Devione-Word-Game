@@ -1,0 +1,92 @@
+.paginationContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1vh;
+    cursor: pointer; 
+    margin-top: 2vh;
+}
+
+.pagination {
+    list-style: none;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-inline-start: 0 !important;
+    color: black;
+    background-color: #e5e5e5;
+}
+.page {
+    color: black;
+    font-size: 1.1em;
+    font-weight: bolder;
+    padding: 0 3px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 4vh;
+    width: 3vw;
+}
+
+.pageLink {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 4vh;
+    width: 3vw;
+    padding: 0 3px;
+    font-size: 1.1em;
+    list-style: none;
+    text-decoration: none;
+    color: white
+}
+
+.pageLinkActive {
+    color: #1f2937
+}
+
+.previousNextPage {
+    color: black;
+    font-size: 1.1em;
+    font-weight: bolder;
+    padding: 0 3px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #e5e5e5;
+    height: 4vh;
+    width: 3vw;
+}
+.previousNextPage:hover {
+    background-color: whitesmoke;
+    cursor: pointer;
+}
+.previousNextPageDisabled:hover {
+    background-color: whitesmoke;
+    cursor: pointer;
+}
+.page:hover {
+    background-color: whitesmoke;
+    cursor: pointer;
+}
+.previousNextPageDisabled {
+    color: gray;
+    font-size: 1.1em;
+    font-weight: bolder;
+    padding: 0 3px;
+    text-decoration: none;
+    pointer-events: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: #e5e5e5;
+    height: 4vh;
+    width: 3vw;
+}
