@@ -6,7 +6,7 @@ import { Score } from '../../../model/Score';
 export class ScoreService {
     resourceUrl = '/api/score';
     
-    async checkWord(word: string): Promise<any>{
+    async checkWord(word: string): Promise<AxiosResponse<any>>{
       const response = await http.post(`${this.resourceUrl}/check-word`, { word });
       return this.processResponse(response.data);     }
 

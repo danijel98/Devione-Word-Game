@@ -49,13 +49,6 @@
     margin-bottom: 1.5vh;
 }
 
-.row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-}
-
 .labelclass {
     font-size: 1rem;
     font-family: mulish-light;
@@ -63,29 +56,10 @@
     margin-bottom: 0.5vh;
 }
 
-.form-label {
-    margin-bottom: 0 !important;
-}
-
-
-.messageContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 0.5vw;
-}
-
 .errorMessage {
     color: red;
     margin-bottom: 0 !important;
     font-size: 1rem;
-    font-family: mulish-light;
-}
-
-.successMessage {
-    color: green;
-    margin-bottom: 0 !important;
-    font-size: 0.7vw;
     font-family: mulish-light;
 }
 

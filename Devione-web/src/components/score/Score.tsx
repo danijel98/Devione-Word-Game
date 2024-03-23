@@ -9,6 +9,7 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ReactPaginate from "react-paginate";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import Alert from "react-bootstrap/Alert";
 
 interface Result {
   palindrome: boolean;
@@ -33,8 +34,8 @@ const Score: React.FC<ScoreProps> = (props) => {
   const [page, setPage] = useState<number>(0);
   const [numberOfElements, setNumberOfElements] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
-  const [message, setMessage] = useState<string>("");
-
+  const [message, setMessage] = useState("");
+  const [messageShow, setMessageShow] = useState(false);
 
   useEffect(() => {
     if (page >= 0 || page <= totalPages - 1) {
@@ -50,6 +51,20 @@ const Score: React.FC<ScoreProps> = (props) => {
     }
   }, [search]);
 
+  useEffect(() => {
+    const messageCreate = createMessage(result);
+    setMessage(messageCreate);
+  }, [result]);
+
+  useEffect(() => {
+    if (
+      message &&
+      message != 'The word "" has been successfully added. Unique letters: 0'
+    ) {
+      setMessageShow(true);
+    }
+  }, [message]);
+
   const getScores = async () => {
     await filter(search, page, 10).then((response: any) => {
       if (!response.error) {
@@ -64,38 +79,23 @@ const Score: React.FC<ScoreProps> = (props) => {
     try {
       const response = await checkWord(word);
       if (!response.error) {
-        console.log("r " ,response);
         const updatedResult = {
           ...response,
-          palindrome: response.palindrome === 'true' ? true : false,
-          almostPalindrome: response.almostPalindrome === 'true' ? true : false,
+          palindrome: response.palindrome === "true" ? true : false,
+          almostPalindrome: response.almostPalindrome === "true" ? true : false,
           word: response.word,
           uniqueLetters: Number(response.uniqueLetters),
         };
-        console.log("updated: ",updatedResult)
         setResult(updatedResult);
-        const message = createMessage(updatedResult);
-        setMessage(message);
-        toast.success(message, {
-          position: "bottom-center",
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-        });
         getScores();
       }
-    } catch (error:any) {
-      console.error("Error checking word:", error.response.data);
-      toast.error(error.response.data, {
+    } catch (error: any) {
+      toast.error(error, {
         position: "bottom-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: false,
+        pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "light",
@@ -103,26 +103,18 @@ const Score: React.FC<ScoreProps> = (props) => {
       });
     }
   };
-  
 
   const createMessage = (result: Result): string => {
-    console.log("Result", result);
     if (result.palindrome) {
-      return `The word "${
-        result.word
-      }" has been successfully added. Unique letters: ${
-        Number(result.uniqueLetters) + 3
-      } (palindrome)`;
+      return `The word "${result.word.toUpperCase()}" has been successfully added. Unique letters: ${
+        Number(result.uniqueLetters) 
+      } (palindrome + 3)`;
     } else if (result.almostPalindrome) {
-      return `The word "${
-        result.word
-      }" has been successfully added. Unique letters: ${
-        Number(result.uniqueLetters) + 2
-      } (almost palindrome)`;
+      return `The word "${result.word.toUpperCase()}" has been successfully added. Unique letters: ${
+        Number(result.uniqueLetters) 
+      } (almost palindrome + 2)`;
     } else {
-      return `The word "${
-        result.word
-      }" has been successfully added. Unique letters: ${Number(
+      return `The word "${result.word.toUpperCase()}" has been successfully added. Unique letters: ${Number(
         result.uniqueLetters
       )}`;
     }
@@ -133,7 +125,25 @@ const Score: React.FC<ScoreProps> = (props) => {
   };
 
   return (
-    <div className={styles.scoreContainer}>
+    <>
+      <div className={styles.alertContainer}>
+        <Alert show={messageShow} variant="success">
+          <Alert.Heading></Alert.Heading>
+          <p>{message}</p>
+          <hr />
+          <div className="d-flex justify-content-end">
+            <button
+              className={styles.btnClose}
+              onClick={() => {
+                setMessage("");
+                setMessageShow(false);
+              }}
+            >
+              <p className={styles.txtClose}>Close</p>
+            </button>
+          </div>
+        </Alert>
+      </div>
       <ToastContainer
         position="bottom-center"
         autoClose={5000}
@@ -205,7 +215,7 @@ const Score: React.FC<ScoreProps> = (props) => {
           }
         />
       </div>
-    </div>
+    </>
   );
 };
 

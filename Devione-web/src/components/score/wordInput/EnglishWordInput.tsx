@@ -40,7 +40,6 @@ const EnglishWordInput: React.FC<EnglishWordInputProps> = ({ onSendWord }) => {
       if (error instanceof Yup.ValidationError) {
         setError(error.message);
       } else {
-        console.error("Error handling word submission:", error);
         toast.error("An error occurred while submitting the word", {
           position: "bottom-center",
           autoClose: 3000,
@@ -60,7 +59,6 @@ const EnglishWordInput: React.FC<EnglishWordInputProps> = ({ onSendWord }) => {
       );
       return response.ok;
     } catch (error) {
-      console.error("Error checking word validity:", error);
       return false;
     }
   };

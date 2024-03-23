@@ -16,14 +16,4 @@ public interface AuthService {
 
 	Optional<User> findByUserId(Long loggedInUserID);
 
-	/*
-	 * boolean existsByEmail(String email);
-	 * 
-	 * boolean existsByUsername(String username);
-	 * 
-	 * User saveUser(User user);
-	 * 
-	 * User findByEmail(String email);
-	 */
-
 }

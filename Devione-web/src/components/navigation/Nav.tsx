@@ -19,7 +19,7 @@ function NavBar() {
         <div className={styles.logoBox}>
           <div className={styles.logo}></div>
         </div>
-      </div>{" "}
+      </div>
       <div className={styles.submitBtnContainer}>
         <button
           name="action"
