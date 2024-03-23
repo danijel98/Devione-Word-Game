@@ -15,17 +15,16 @@ public class SignUpRequest {
     private String username;
     private String password;
     
-	//method to validate fields
     public String Validate() {
 
   	  	String msg="";
-  		// validating ime field with required, min length 2, max length 30 and regex check
+  		// validating name field with required, min length 2, max length 30 and regex check
   	  	msg= Errors.ValidateRequireAndLengthAndRegex(this.name, true, 2, 30, "^(?!.*[ ]{2})[A-ZČĆĐŠŽ]+(?:[a-zA-ZČčĆćŠšĐđŽž ]+)*[a-zčćšđž]$", "Ime");
   		if(!msg.isEmpty()) {
   			return msg;
   		}
 
-  		// validating prezime field with required, min length 2, max length 40 and regex check
+  		// validating lastname field with required, min length 2, max length 40 and regex check
   		msg =  Errors.ValidateRequireAndLengthAndRegex(this.lastname, true, 2, 40, "^(?!.*[ ]{2})[A-ZČĆĐŠŽ]+(?:[a-zA-ZČčĆćŠšĐđŽž -]+)*[a-zčćšđž]$", "Prezime");
   		if(!msg.isEmpty()) {
   			return msg;

@@ -1,11 +1,12 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Register.module.css";
 import { register } from "../../../redux/actions/authAction";
 import Form from "react-bootstrap/Form";
 import { useAppDispatch } from "../../../redux/store";
 import * as Yup from "yup";
-import { Formik, Form as FormikForm, Field, ErrorMessage, FormikValues } from "formik";
+import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 interface FormValues {
   name: string;
@@ -59,23 +60,57 @@ function Register() {
       ),
   });
 
-  const [message, setMessage] = useState("");
-
-  const handleRegister = async (values: FormValues, { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }) => {
-    dispatch(register(values))
-      .then(() => {
-        navigate("/login");
-      })
-      .catch((err: string) => {
-        setMessage(err);
-      })
-      .finally(() => {
-        setSubmitting(false);
+  const handleRegister = async (
+    values: FormValues,
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+  ) => {
+    try {
+      await dispatch(register(values));
+      toast.success('You have successfully registered', {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
       });
+      navigate("/login");
+    } catch (error:any) {
+      toast.error(error.toUpperCase() || "An error occurred during registration", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
+  
 
   return (
     <div className={styles.mainContainer}>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
       <div className={styles.formContainer}>
         <Formik
           initialValues={{
@@ -87,10 +122,9 @@ function Register() {
           }}
           validationSchema={validationSchema}
           onSubmit={handleRegister}
-
         >
           {({ isSubmitting }) => (
-            <FormikForm className={styles.form} >
+            <FormikForm className={styles.form}>
               <Form.Group className={styles.formGroup}>
                 <div className={`row ${styles.labelclass}`}>
                   <Form.Label>Name</Form.Label>
@@ -100,7 +134,7 @@ function Register() {
                   type="text"
                   as={Form.Control}
                   className={styles.inputClass}
-                  />
+                />
                 <ErrorMessage
                   name="name"
                   component="div"
@@ -116,7 +150,7 @@ function Register() {
                   type="text"
                   as={Form.Control}
                   className={styles.inputClass}
-                  />
+                />
                 <ErrorMessage
                   name="lastname"
                   component="div"
@@ -132,7 +166,7 @@ function Register() {
                   type="email"
                   as={Form.Control}
                   className={styles.inputClass}
-                  />
+                />
                 <ErrorMessage
                   name="email"
                   component="div"
@@ -148,7 +182,7 @@ function Register() {
                   type="text"
                   as={Form.Control}
                   className={styles.inputClass}
-                  />
+                />
                 <ErrorMessage
                   name="username"
                   component="div"
@@ -164,7 +198,7 @@ function Register() {
                   type="password"
                   as={Form.Control}
                   className={styles.inputClass}
-                  />
+                />
                 <ErrorMessage
                   name="password"
                   component="div"

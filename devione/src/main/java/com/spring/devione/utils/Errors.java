@@ -13,9 +13,10 @@ public class Errors {
 	public static final String BadRequest = "badRequest";
 	public static final String BadCredentials = "badCredentials";
 	public static final String Unauthorized = "unauthorized";
-	public static final String EmailAlreadyExists = "EmailAlreadyExists";
-	public static final String UsernameAlreadyExists = "UsernameAlreadyExists";
-	public static final String UserNotExists = "UserNotExists";
+	public static final String EmailAlreadyExists = "emailAlreadyExists";
+	public static final String UsernameAlreadyExists = "usernameAlreadyExists";
+	public static final String WordAlreadyExists = "wordAlreadyExists";
+
 
 	
 	private static Map<String, String> errorMessage = new HashMap<String, String>() {
@@ -28,7 +29,7 @@ public class Errors {
 			put( "unauthorized", "an unauthorized access" );
 			put( "emailAlreadyExists", "email already exists" );
 			put( "usernameAlreadyExists", "username already exists" );
-			put( "userAlreadyExists", "user already exists" );
+			put( "wordAlreadyExists", "word already exists" );
 		}
 	};
 

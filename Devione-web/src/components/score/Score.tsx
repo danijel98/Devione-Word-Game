@@ -8,6 +8,7 @@ import stylesPagination from "../../pagination/Pagination.module.css";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import ReactPaginate from "react-paginate";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 interface Result {
   palindrome: boolean;
@@ -32,6 +33,8 @@ const Score: React.FC<ScoreProps> = (props) => {
   const [page, setPage] = useState<number>(0);
   const [numberOfElements, setNumberOfElements] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [message, setMessage] = useState<string>("");
+
 
   useEffect(() => {
     if (page >= 0 || page <= totalPages - 1) {
@@ -58,19 +61,71 @@ const Score: React.FC<ScoreProps> = (props) => {
   };
 
   const handleCheckWord = async (word: string) => {
-    checkWord(word)
-      .then((response: any) => {
-        setResult({
-          palindrome: response.palindrome,
-          almostPalindrome: response.almostPalindrome,
+    try {
+      const response = await checkWord(word);
+      if (!response.error) {
+        console.log("r " ,response);
+        const updatedResult = {
+          ...response,
+          palindrome: response.palindrome === 'true' ? true : false,
+          almostPalindrome: response.almostPalindrome === 'true' ? true : false,
           word: response.word,
-          uniqueLetters: response.uniqueLetters
-      });
+          uniqueLetters: Number(response.uniqueLetters),
+        };
+        console.log("updated: ",updatedResult)
+        setResult(updatedResult);
+        const message = createMessage(updatedResult);
+        setMessage(message);
+        toast.success(message, {
+          position: "bottom-center",
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
         getScores();
-      })
-      .catch((error: any) => {
-        console.error("Error checking word:", error);
+      }
+    } catch (error:any) {
+      console.error("Error checking word:", error.response.data);
+      toast.error(error.response.data, {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
       });
+    }
+  };
+  
+
+  const createMessage = (result: Result): string => {
+    console.log("Result", result);
+    if (result.palindrome) {
+      return `The word "${
+        result.word
+      }" has been successfully added. Unique letters: ${
+        Number(result.uniqueLetters) + 3
+      } (palindrome)`;
+    } else if (result.almostPalindrome) {
+      return `The word "${
+        result.word
+      }" has been successfully added. Unique letters: ${
+        Number(result.uniqueLetters) + 2
+      } (almost palindrome)`;
+    } else {
+      return `The word "${
+        result.word
+      }" has been successfully added. Unique letters: ${Number(
+        result.uniqueLetters
+      )}`;
+    }
   };
 
   const handlePageChange = (e: any) => {
@@ -79,6 +134,19 @@ const Score: React.FC<ScoreProps> = (props) => {
 
   return (
     <div className={styles.scoreContainer}>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
       <EnglishWordInput onSendWord={handleCheckWord} />
       <table className={styles.table}>
         <thead>
@@ -89,9 +157,9 @@ const Score: React.FC<ScoreProps> = (props) => {
           </tr>
         </thead>
         <tbody>
-          {scores.map((score,index) => (
+          {scores.map((score, index) => (
             <tr key={score.id}>
-              <td>{index+1}</td>
+              <td>{index + 1}</td>
               <td>{score.word}</td>
               <td>{score.points}</td>
             </tr>

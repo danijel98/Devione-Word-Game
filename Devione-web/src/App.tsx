@@ -1,18 +1,15 @@
-import './App.css';
-import React, { useEffect } from 'react';
-
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { PrivateRoute } from './route/PrivateRoute';
+import { ToastContainer } from 'react-toastify';
+
 import Home from './components/home/Home';
 import Login from './components/auth/login/Login';
-import 'react-confirm-alert/src/react-confirm-alert.css';
-import { useDispatch, useSelector } from 'react-redux';
 import Register from './components/auth/register/Register';
 
-function App() {
+import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 
-  const dispatch = useDispatch();
-  const token = useSelector((state: any) => state.auth.token);
+function App() {
 
   return (
     <BrowserRouter>

@@ -47,7 +47,7 @@ export const logout = () => (dispatch: Dispatch<any>) => {
           return Promise.resolve('Registration successful');
         },
         (error: any) => {
-          const message = error.response.data.error;
+          const message = error.response.data.error_description;
           return Promise.reject(message);
         }
       );

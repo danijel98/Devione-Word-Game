@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.spring.devione.entity.Score;
@@ -15,6 +17,7 @@ import com.spring.devione.entity.User;
 import com.spring.devione.repository.ScoreRepository;
 import com.spring.devione.response.ScoreResponse;
 import com.spring.devione.service.ScoreService;
+import com.spring.devione.utils.Errors;
 
 @Service
 public class ScoreServiceImpl implements ScoreService {
@@ -25,10 +28,6 @@ public class ScoreServiceImpl implements ScoreService {
 	@Override
 	public void saveResult(String word, int uniqueLettersCount, boolean isPalindrome, boolean isAlmostPalindrome,
 			User user) {
-
-		if (scoreRepository.existsByUserAndWord(user, word)) {
-		    throw new RuntimeException("Word already exists");
-		}
 
 		int points = calculatePoints(uniqueLettersCount, isPalindrome, isAlmostPalindrome);
 
@@ -44,9 +43,9 @@ public class ScoreServiceImpl implements ScoreService {
 		int points = uniqueLettersCount;
 
 		if (isPalindrome) {
-			points += 3; 
+			points += 3;
 		} else if (isAlmostPalindrome) {
-			points += 2; 
+			points += 2;
 		}
 
 		return points;
@@ -57,7 +56,7 @@ public class ScoreServiceImpl implements ScoreService {
 		Sort sort = Sort.by(Sort.Direction.DESC, "points");
 		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
 		Page<Score> scores = scoreRepository.findByUserIdAndWordContainingIgnoreCase(id, searchParam, pageable);
-		
+
 		return scores;
 	}
 
@@ -77,4 +76,11 @@ public class ScoreServiceImpl implements ScoreService {
 		return scoreResponse;
 	}
 
+	@Override
+	public boolean existsByUserAndWord(User user, String word) {
+		boolean score = scoreRepository.existsByUserAndWord(user, word);
+		return score;
+	}
+
+	
 }

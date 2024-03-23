@@ -19,6 +19,7 @@ import com.spring.devione.entity.User;
 import com.spring.devione.request.ScoreRequest;
 import com.spring.devione.service.AuthService;
 import com.spring.devione.service.ScoreService;
+import com.spring.devione.utils.Errors;
 import com.spring.devione.utils.PaginationUtils;
 import com.spring.devione.utils.Variables;
 
@@ -35,22 +36,21 @@ public class ScoreController {
 
 	@Autowired
 	private AuthService authService;
-	
+
 	@Value("${api.url}")
 	private String apiUrl;
 
-	
 	@GetMapping
 	public ResponseEntity<?> getScores(String searchParam, Pageable pageable) {
 		Optional<User> user = authService.findByUserId(Variables.getLoggedInUserID());
 		if (user.isPresent() && user.get().isActive()) {
-			Page<Score> scores = scoreService.filter(user.get().getId(),searchParam, pageable);
+			Page<Score> scores = scoreService.filter(user.get().getId(), searchParam, pageable);
 			HttpHeaders headers = PaginationUtils.generatePaginationHttpHeaders(scores);
-			
+
 			return ResponseEntity.ok().headers(headers).body(scoreService.toDTO(scores.toList()));
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad request.");
-	
+
 	}
 
 	@PostMapping("/check-word")
@@ -68,18 +68,27 @@ public class ScoreController {
 		boolean isPalindrome = isPalindrome(word);
 
 		boolean isAlmostPalindrome = false;
-		
+
 		if (!isPalindrome) {
-		    isAlmostPalindrome = isAlmostPalindrome(word);
-		}
-		
-		Optional<User> user = authService.findByUserId(Variables.getLoggedInUserID());
-		if (user.isPresent() && user.get().isActive()) {
-			scoreService.saveResult(word.toUpperCase(), uniqueLettersCount, isPalindrome, isAlmostPalindrome, user.get());
-			
+			isAlmostPalindrome = isAlmostPalindrome(word);
 		}
 
-		String response = "palindrome: " + isPalindrome + ", almostPalindrome: " + isAlmostPalindrome + ", word: "+ word + ", uniqueLetters: " + uniqueLettersCount;
+		Optional<User> user = authService.findByUserId(Variables.getLoggedInUserID());
+		if (user.isPresent() && user.get().isActive()) {
+			boolean exist = scoreService.existsByUserAndWord(user.get(), word);
+			if (!exist) {
+				System.out.println("uslo");
+				scoreService.saveResult(word.toUpperCase(), uniqueLettersCount, isPalindrome, isAlmostPalindrome,
+						user.get());
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Word Already Exists");
+
+			}
+
+		}
+
+		String response = "palindrome: " + isPalindrome + ", almostPalindrome: " + isAlmostPalindrome + ", word: "
+				+ word + ", uniqueLetters: " + uniqueLettersCount;
 		return ResponseEntity.ok(response);
 	}
 

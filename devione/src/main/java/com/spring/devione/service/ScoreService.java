@@ -17,5 +17,7 @@ public interface ScoreService {
 	
 	Collection<ScoreResponse> toDTO(Collection<Score> models);
 
+	boolean existsByUserAndWord(User user, String word);
+
 
 }
